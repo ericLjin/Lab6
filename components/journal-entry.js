@@ -42,17 +42,12 @@ class JournalEntry extends HTMLElement {
                 margin-top: 5px;
             }
         </style>
-        <article class="entry">
-            <h2 class="entry-title"></h2>
-            <p class="entry-date"></p>
-            <p class="entry-content"></p>
-        </article>
         `;
 
     // create a shadow root for this web component
-    this.attachShadow({ mode: 'open' })
-    // attach cloned content of template to shadow DOM 
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this.attachShadow({ mode: 'open' });
+    // attach cloned content of template to shadow DOM
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
   }
 
   /*
@@ -68,14 +63,43 @@ class JournalEntry extends HTMLElement {
    * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set
    */
   set entry(entry) {
-    /* 
+    /*
      * TODO: set the entry title, date, and content fields in this component
      */
-    
+
+     let entryTitle = entry.title;
+     let entryDate = entry.date;
+     let entryContent = entry.content;
+
+     let articleWrapper = document.createElement('article');
+     articleWrapper.setAttribute('class', 'entry');
+     this.shadowRoot.appendChild(articleWrapper);
+
+     let title = document.createElement('h2');
+     title.setAttribute('class', 'entry-title');
+     title.textContent = entryTitle;
+
+     let date = document.createElement('p');
+     date.setAttribute('class', 'entry-date');
+     date.textContent = entryDate;
+
+     let content = document.createElement('p');
+     content.setAttribute('class', 'entry-content');
+     content.textContent = entryContent;
+
+     articleWrapper.appendChild(title);
+     articleWrapper.appendChild(date);
+     articleWrapper.appendChild(content);
+
     // CODE GOES HERE
 
     if (entry.image) {
-      let entryImage;
+      let entryImage = document.createElement('img');
+      entryImage.setAttribute('src', entry.image.src);
+      entryImage.setAttribute('alt', entry.image.alt);
+      entryImage.setAttribute('class', 'entry-image');
+      articleWrapper.appendChild(entryImage);
+
       /*
        * TODO: if the entry contains an image resource,
        * 1. create an image element with the correct class
@@ -84,11 +108,6 @@ class JournalEntry extends HTMLElement {
        */
 
       // CODE GOES HERE vvv
-
-
-
-
-
       // CODE GOES HERE ^^^
 
       /* ------------- do not edit this code, it is for your debugging purposes ------------- */
@@ -101,7 +120,11 @@ class JournalEntry extends HTMLElement {
 
     }
     if (entry.audio) {
-      let entryAudio;
+        let entryAudio = document.createElement('audio');
+        entryAudio.setAttribute('src', entry.audio);
+        entryAudio.setAttribute('controls', '');
+        entryAudio.setAttribute('class', 'entry-audio');
+        articleWrapper.appendChild(entryAudio);
       /*
        * TODO: if the entry contains an audio resource,
        * 1. create an audio element with the correct class
@@ -110,16 +133,7 @@ class JournalEntry extends HTMLElement {
        */
 
       // CODE GOES HERE vvv
-
-
-
-
-
-
       // CODE GOES HERE ^^^
-      
-
-      
       /* ------------- do not edit this code, it is for your debugging purposes ------------- */
       try {
         window.logCheckpoint('"entryAudio"', exampleAudio, entryAudio);
@@ -143,10 +157,10 @@ class JournalEntry extends HTMLElement {
 }
 
 /*
- * Define a custom element for the JournalEntry web component, 
+ * Define a custom element for the JournalEntry web component,
  * where 'journal-entry' is the string that represents this element.
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
- */ 
+ */
 customElements.define('journal-entry', JournalEntry);
 
 /**
